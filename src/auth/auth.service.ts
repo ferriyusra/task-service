@@ -3,10 +3,12 @@ import { RegisterDto } from './dto/RegisterDto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { hash, compare } from 'bcrypt';
 import { LoginDto } from './dto/LoginDto';
+import { JwtService } from '@nestjs/jwt';
+import { JWTCONFIG } from 'src/config/configJwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private jwtService: JwtService) {}
 
   /**
    * Register new user
@@ -57,9 +59,16 @@ export class AuthService {
 
     const checkPassword = await compare(password, passwordCompare);
     if (checkPassword) {
+      const accessToken = this.generateToken({
+        sub: user.id,
+        name: user.name,
+        email: user.email,
+      });
+
       return {
         status_code: 200,
         message: 'Login successfully',
+        access_token: accessToken,
       };
     } else {
       throw new HttpException(
@@ -67,5 +76,17 @@ export class AuthService {
         HttpStatus.UNAUTHORIZED,
       );
     }
+  }
+
+  /**
+   * Generate JWT Token
+   * @param payload
+   * @returns
+   */
+  generateToken(payload: any) {
+    return this.jwtService.sign(payload, {
+      secret: JWTCONFIG.secret,
+      expiresIn: JWTCONFIG.expired,
+    });
   }
 }
