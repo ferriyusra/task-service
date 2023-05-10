@@ -6,4 +6,8 @@ export class TaskService {
   async createTask(data: CreateTaskDto) {
     return 'create a new task service';
   }
+
+  async getAllTask() {
+    return 'get all tasks';
+  }
 }
