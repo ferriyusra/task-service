@@ -1,17 +1,35 @@
+import { tasks } from './data/task';
 import { CreateTaskDto } from './dto/CreateTaskDTO';
+import { UpdateTaskDto } from './dto/UpdateTaskDto';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class TaskService {
   async createTask(data: CreateTaskDto) {
-    return 'create a new task service';
+    return {
+      statusCode: 200,
+      data,
+    };
   }
 
   async getAllTask() {
-    return 'get all tasks';
+    return {
+      statusCode: 200,
+      data: tasks,
+    };
   }
 
-  async getTaskById(id: string) {
-    return 'get a task by id';
+  async getTaskById(id: number) {
+    return {
+      statusCode: 200,
+      data: tasks.find((task) => task.id == id),
+    };
+  }
+
+  async updateTaskById(id: number, data: UpdateTaskDto) {
+    return {
+      statusCode: 200,
+      data: data,
+    };
   }
 }
