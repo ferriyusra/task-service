@@ -32,4 +32,12 @@ export class TaskService {
       data: data,
     };
   }
+
+  async deleteTaskById(id: number) {
+    return {
+      statusCode: 200,
+      data: tasks.find((task) => task.id == id),
+      message: 'Task deleted successfully',
+    };
+  }
 }
