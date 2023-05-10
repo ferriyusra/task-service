@@ -10,4 +10,8 @@ export class TaskService {
   async getAllTask() {
     return 'get all tasks';
   }
+
+  async getTaskById(id: string) {
+    return 'get a task by id';
+  }
 }
