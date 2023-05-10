@@ -1,4 +1,4 @@
 export class CreateTaskDto {
-  taskName: string;
-  taskDescription: string;
+  task_name: string;
+  task_description: string;
 }
