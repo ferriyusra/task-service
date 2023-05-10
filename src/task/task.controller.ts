@@ -27,7 +27,7 @@ export class TaskController {
 
   @Get('/:id')
   async getTaskById(@Param('id') id) {
-    return await this.taskService.getTaskById(id);
+    return await this.taskService.getTaskById(parseInt(id));
   }
 
   @Patch('/:id')

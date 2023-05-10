@@ -25,13 +25,28 @@ export class TaskService {
     return {
       status_code: 200,
       data: tasks,
+      message: 'Get All Task successfully',
     };
   }
 
   async getTaskById(id: number) {
+    const task = await this.prisma.tasks.findFirst({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!task) {
+      return {
+        status_code: 200,
+        message: 'Task not found',
+      };
+    }
+
     return {
       status_code: 200,
-      data: tasks.find((task) => task.id == id),
+      data: task,
+      message: 'Get Task successfully',
     };
   }
 
