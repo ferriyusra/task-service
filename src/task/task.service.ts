@@ -66,7 +66,7 @@ export class TaskService {
 
     const updatedTask = await this.prisma.tasks.update({
       where: {
-        id: id,
+        id: task.id,
       },
       data: data,
     });
@@ -78,9 +78,28 @@ export class TaskService {
   }
 
   async deleteTaskById(id: number) {
+    const task = await this.prisma.tasks.findFirst({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!task) {
+      return {
+        status_code: 200,
+        message: 'Task not found',
+      };
+    }
+
+    const deletedTask = await this.prisma.tasks.delete({
+      where: {
+        id: task.id,
+      },
+    });
+
     return {
       status_code: 200,
-      data: tasks.find((task) => task.id == id),
+      data: deletedTask,
       message: 'Task deleted successfully',
     };
   }
