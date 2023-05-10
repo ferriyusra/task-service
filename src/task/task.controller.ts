@@ -32,7 +32,7 @@ export class TaskController {
 
   @Patch('/:id')
   async updateTaskById(@Param('id') id, @Body() body: UpdateTaskDto) {
-    return await this.taskService.updateTaskById(id, body);
+    return await this.taskService.updateTaskById(parseInt(id), body);
   }
 
   @Delete('/:id')

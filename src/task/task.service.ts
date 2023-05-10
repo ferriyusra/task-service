@@ -51,9 +51,29 @@ export class TaskService {
   }
 
   async updateTaskById(id: number, data: UpdateTaskDto) {
+    const task = await this.prisma.tasks.findFirst({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!task) {
+      return {
+        status_code: 200,
+        message: 'Task not found',
+      };
+    }
+
+    const updatedTask = await this.prisma.tasks.update({
+      where: {
+        id: id,
+      },
+      data: data,
+    });
+
     return {
       status_code: 200,
-      data: data,
+      data: updatedTask,
     };
   }
 
