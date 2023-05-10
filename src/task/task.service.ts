@@ -14,36 +14,37 @@ export class TaskService {
     });
 
     return {
-      statusCode: 200,
+      status_code: 200,
       data: task,
       message: 'Task created successfully',
     };
   }
 
   async getAllTask() {
+    const tasks = await this.prisma.tasks.findMany();
     return {
-      statusCode: 200,
+      status_code: 200,
       data: tasks,
     };
   }
 
   async getTaskById(id: number) {
     return {
-      statusCode: 200,
+      status_code: 200,
       data: tasks.find((task) => task.id == id),
     };
   }
 
   async updateTaskById(id: number, data: UpdateTaskDto) {
     return {
-      statusCode: 200,
+      status_code: 200,
       data: data,
     };
   }
 
   async deleteTaskById(id: number) {
     return {
-      statusCode: 200,
+      status_code: 200,
       data: tasks.find((task) => task.id == id),
       message: 'Task deleted successfully',
     };
