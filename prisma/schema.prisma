@@ -9,3 +9,11 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model tasks {
+  id                  Int       @id @default(autoincrement())
+  task_name           String
+  task_description    String    @db.Text
+  created_at          DateTime  @default(now())
+  updated_at          DateTime  @default(now())
+}
