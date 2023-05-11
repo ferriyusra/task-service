@@ -70,6 +70,7 @@ export class TaskService {
     const task = await this.prisma.tasks.findFirst({
       where: {
         id: id,
+        id_user: this.req.user.id,
       },
     });
 
@@ -80,6 +81,7 @@ export class TaskService {
       };
     }
 
+    data.id_user = this.req.user.id;
     const updatedTask = await this.prisma.tasks.update({
       where: {
         id: task.id,
