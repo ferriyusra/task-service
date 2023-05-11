@@ -48,6 +48,7 @@ export class TaskService {
     const task = await this.prisma.tasks.findFirst({
       where: {
         id: id,
+        id_user: this.req.user.id,
       },
     });
 
