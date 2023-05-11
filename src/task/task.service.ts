@@ -3,12 +3,23 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateTaskDto } from './dto/CreateTaskDTO';
 import { UpdateTaskDto } from './dto/UpdateTaskDto';
 import { Injectable } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
+import { Inject } from '@nestjs/common';
 
 @Injectable()
 export class TaskService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    @Inject(REQUEST) private req: any,
+  ) {}
 
+  /**
+   * Create task
+   * @param data
+   * @returns
+   */
   async createTask(data: CreateTaskDto) {
+    data.id_user = this.req.user.id;
     const task = await this.prisma.tasks.create({
       data: data,
     });
@@ -21,7 +32,11 @@ export class TaskService {
   }
 
   async getAllTask() {
-    const tasks = await this.prisma.tasks.findMany();
+    const tasks = await this.prisma.tasks.findMany({
+      where: {
+        id_user: this.req.user.id,
+      },
+    });
     return {
       status_code: 200,
       data: tasks,
