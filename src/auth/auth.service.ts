@@ -84,16 +84,64 @@ export class AuthService {
    * @returns
    */
   async profile(user_id: number) {
-    return await this.prisma.users.findFirst({
+    const user = await this.prisma.users.findFirst({
       where: {
         id: user_id,
       },
       select: {
+        id: true,
         name: true,
         email: true,
         avatar: true,
       },
     });
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    return {
+      status_code: 200,
+      data: user,
+    };
+  }
+
+  /**
+   * Upload Avatar
+   * @param user_id
+   * @param avatar
+   * @returns
+   */
+  async uploadAvatar(user_id: number, avatar) {
+    const user = await this.prisma.users.findFirst({
+      where: {
+        id: user_id,
+      },
+    });
+
+    if (!user) {
+      return {
+        status_code: 200,
+        message: 'User not found',
+      };
+    }
+
+    const updateAvatar = await this.prisma.users.update({
+      data: {
+        avatar: avatar,
+      },
+      where: {
+        id: user_id,
+      },
+    });
+
+    if (updateAvatar) {
+      return {
+        status_code: 200,
+        message: 'Upload avatar successfully uploaded',
+      };
+    }
+    throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
   }
 
   /**
