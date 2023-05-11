@@ -79,6 +79,24 @@ export class AuthService {
   }
 
   /**
+   * User Detail
+   * @param user_id
+   * @returns
+   */
+  async profile(user_id: number) {
+    return await this.prisma.users.findFirst({
+      where: {
+        id: user_id,
+      },
+      select: {
+        name: true,
+        email: true,
+        avatar: true,
+      },
+    });
+  }
+
+  /**
    * Generate JWT Token
    * @param payload
    * @returns
