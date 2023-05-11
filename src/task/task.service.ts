@@ -95,6 +95,11 @@ export class TaskService {
     };
   }
 
+  /**
+   * Delete task
+   * @param id
+   * @returns
+   */
   async deleteTaskById(id: number) {
     const task = await this.prisma.tasks.findFirst({
       where: {
